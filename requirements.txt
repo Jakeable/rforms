@@ -1,5 +1,5 @@
 Flask==0.12
 flask-sqlalchemy==2.1
 requests==2.12.1
-Flask-SSLify==0.1.6
+Flask-SSLify==0.1.5
 markdown==2.6.8
