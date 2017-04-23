@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content%}
+    <p>Unfortunately you are ineligible to fill out this form for the following reason(s):</p>
+    <ul>
+        {% for error in errors %}
+        <div>
+            <li>{{ error|safe }}</li>
+        </div>
+        {% endfor %}
+    </ul>
+    <div class="alert alert-info" role="alert">
+    <p>If you believe that this error message should not be appearing, please make sure that cookies are enabled for this site. Click <a href="https://www.reddit.com/message/compose?to={{g.settings.contact_destination}}">here</a> to send a message to {{g.settings.contact_destination}} if this issue persists. Please copy and paste the error messages that you see here for reference.</p>
+    </div>
+{% endblock %}

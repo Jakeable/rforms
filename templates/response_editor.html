@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block head %}
+<!--TODO: add these to static files + selfhost -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-markdown.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-monokai.js"></script>
+{% endblock %}
+{% block content %}
+<!--http://jsfiddle.net/skelly/g5AW4/-->
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+             <h3 class="panel-title">Question Editor</h3>
+        </div>
+        <div class="panel-body">
+            <h4>Valid Placeholders</h4>
+            <p>{username}, {age}, {post_karma}, {comment_karma}, {combined_karma}, {is_verified}, {is_mod}</p>
+        </div>
+        <div class="panel-body">
+            <div id="editor" style="height: 300px;"></div>
+        </div>
+        <div>
+    </div>
+    <div class="text-center">
+        <a href="https://gist.github.com/Jakeable/519f95d3ae725324e8bf8ef74b1c88cf" target="_blank">view example config</a>
+    </div>
+    <div class="text-center">
+        <button id="save">Save</button></div>
+    <div class="text-center"><a href="/mod/settings">return to settings</a></div>
+</div>
+<script>
+    var txt = `{{g.settings.response_body | safe}}`;
+</script>
+<script>
+  //TODO: Move JS to its own file
+
+  //Editor setup
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/monokai");
+  editor.getSession().setMode("ace/mode/markdown");
+  editor.getSession().setUseWrapMode(true);
+  editor.setShowPrintMargin(false);
+  editor.setValue(txt, -1);
+  //Buttons
+  //save question data to database
+  $("#save").on("click", function() {
+      editor.setReadOnly(true);
+      var text = editor.getValue();
+      $.post('/api/update_setting', {"setting":"response_body", "data":text});
+  });
+</script>
+{% endblock %}

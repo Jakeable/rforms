@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Mod Settings</h2>
+<hr>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>setting</th>
+            <th>detail</th>
+            <th>current value</th>
+            <th>modify setting</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Accepting Responses</td>
+            <td>Whether this form is accepting responses or not.</td>
+            <td>{{g.settings.accepting}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('accepting', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Site Title</td>
+            <td>The name of this site displayed in the header of all pages.</td>
+            <td>{{g.settings.site_title}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('site_title', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Welcome Body</td>
+            <td>The welcome text displayed on <a href="/">the homepage</a>.</td>
+            <td>{{g.settings.welcome_body}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('welcome_body', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Form Instructions</td>
+            <td>Instructions for the user filling out the form.</td>
+            <td>{{g.settings.instructions}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('instructions', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Questions</td>
+            <td>Questions for the form.</td>
+            <td colspan="2" align="center"><a href="/mod/questions">(open questions editor)</a></td>
+        </tr>
+        <tr>
+            <td>Minimum Karma</td>
+            <td>Minimum combined (post+comment) karma required to view and fill out the form. To disable, set this to -101.</td>
+            <td>{{g.settings.min_karma}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('min_karma', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Minimum Age</td>
+            <td>Minimum age to view the form (in seconds). To disable, set this to -1.</td>
+            <td>{{g.settings.min_age}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('min_age', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Expose Requirements</td>
+            <td>Whether the minimum age/karma requirements should be disclosed to users.</td>
+            <td>{{g.settings.expose_mins}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('expose_mins', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Form Preview</td>
+            <td>Allows a <a href="/preview">nonsubmittable version of the form</a> to be previewed by users.</td>
+            <td>{{g.settings.preview_allowed}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('preview_allowed', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Form Destination</td>
+            <td>Where the replies to this form should be posted (a subreddit, comment, or messaging destination). See <a href="/docs/Destinations">the documentation</a> for details on what goes here.</td>
+            <td>{{g.settings.destination_id}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('destination_id', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Response Title</td>
+            <td>The title of the post or the subject of the message sent with the user's response. This setting supports tokens. See <a href="/docs/Tokens">the documentation</a> for details.</td>
+            <td>{{g.settings.response_title}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('response_title', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Response Body</td>
+            <td>The body of the post, comment or message containing the user's response.</td>
+            <td colspan="2" align="center"><a href="/mod/response">(open response editor)</a></td>
+        </tr>
+        <tr>
+            <td colspan="4" align="center"><strong>Confirmation Settings</strong></td>
+        </tr>
+        <tr>
+            <td>Message User</td>
+            <td>Whether a user should be sent a confirmation notice when their form submission is recorded.</td>
+            <td>{{g.settings.message_user}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('message_user', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Message Subject</td>
+            <td>The message subject for the confirmation message. This setting supports tokens. See <a href="/docs/Tokens">the documentation</a> for details.</td>
+            <td>{{g.settings.message_subject}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('message_subject', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Message Body</td>
+            <td>The body of the confirmation message. This setting supports tokens. See <a href="/docs/Tokens">the documentation</a> for details.</td>
+            <td>{{g.settings.message_body}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('message_body', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Success URL</td>
+            <td>Where users should be sent if their form was submitted correctly.</td>
+            <td>{{g.settings.success_url}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('success_url', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Contact Person</td>
+            <td>A reddit username or subreddit. This will be linked on certain pages in the event a user has a question.</td>
+            <td>{{g.settings.success_url}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('message_url', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td colspan="4" align="center"><strong>Google Analytics Settings</strong></td>
+        </tr>
+        <tr>
+            <td>Google Analytics Enabled</td>
+            <td>Whether or not Google Analytics is enabled for this form.</td>
+            <td>{{g.settings.google_analytics_enabled}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('google_analytics_enabled', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+        <tr>
+            <td>Google Analytics ID</td>
+            <td>Adds Google Analytics tracking to the form. IDs can be acquired from <a href="https://analytics.google.com">Google Analytics</a>.</td>
+            <td>{{g.settings.google_analytics_id}}</td>
+            <td><button id="singlebutton" name="singlebutton" class="btn btn-info" onClick="editSetting('google_analytics_id', $(this).closest('tr').children('td:eq(0)').text(), $(this).closest('tr').children('td:eq(1)').text());">Edit</button></td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

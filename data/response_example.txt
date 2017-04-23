@@ -1,0 +1,21 @@
+{response}
+
+---
+
+###Information about u/{username}
+
+**Username:** u/{username}
+
+**Account Age:** redditor for {age}
+
+**Post Karma:** {post_karma}
+
+**Comment Karma:** {comment_karma}
+
+**Combined Karma:** {combined_karma}
+
+**User has Verified Email Address:** {is_verified}
+
+**User is a Moderator:** {is_mod}
+
+**Reddit Search:** [Reddit posts about {username} (excluding items by {username})](https://www.reddit.com/search?q={username}+-author%3A{username})

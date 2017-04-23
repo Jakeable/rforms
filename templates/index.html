@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+  <h1>Welcome!</h1>
+  <p>{{ g.settings.welcome_body | safe }}</p>
+  {% if g.settings.accepting %}
+      <p><a class="btn btn-primary btn-lg" href="/auth" role="button">Fill out Form</a></p>
+      {% if g.settings.preview_allowed %}
+      <p><a class="btn btn-primary btn-lg" href="/preview" role="button">Preview the Form</a></p>
+      {% endif %}
+  {% else %}
+  <hr>
+  <p>This form is not currently accepting responses. Please <a href="/contact">contact {{g.settings.contact_destination}}</a> for details.</p>
+  {% endif %}
+</div>
+{% endblock %}

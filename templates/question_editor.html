@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block head %}
+<!--TODO: add these to static files + selfhost -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/mode-json.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/theme-monokai.js"></script>
+{% endblock %}
+{% block content %}
+<!--http://jsfiddle.net/skelly/g5AW4/-->
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+             <h3 class="panel-title">Question Editor</h3>
+        </div>
+        <div class="panel-body">
+            <div id="editor" style="height: 300px;"></div>
+        </div>
+        <div>
+    </div>
+    <div class="text-center">
+        <a href="https://gist.github.com/Jakeable/60ebdae1a8fe3918fee3be1f8efa9ee5" target="_blank">view example config</a>
+    </div>
+    <div class="text-center">
+        <button id="format">Format JSON</button>
+        <button id="save">Save</button></div>
+    <div class="text-center"><a href="/mod/settings">return to settings</a></div>
+</div>
+<script>
+    var questionJSON = `{{g.settings.questions | safe}}`;
+</script>
+<script>
+  //TODO: Move JS to its own file
+
+  //Editor setup
+  var editor = ace.edit("editor");
+  editor.setTheme("ace/theme/monokai");
+  editor.getSession().setMode("ace/mode/json");
+  editor.getSession().setUseWrapMode(true);
+  editor.setShowPrintMargin(false);
+  editor.setValue(JSON.stringify(JSON.parse(questionJSON), null, '\t'), -1);
+
+  //Buttons
+  //pretty print json
+  $("#format").on("click", function(){
+      var currentText = JSON.parse(editor.getValue());
+      editor.setValue(JSON.stringify(currentText, null, '\t'), -1);
+  });
+
+  //save question data to database
+  $("#save").on("click", function() {
+      editor.setReadOnly(true);
+      var text = JSON.parse(editor.getValue());
+      $.ajax('/api/questions', {
+          data: JSON.stringify(text),
+          contentType: 'application/json',
+          type: 'POST',
+          success: function(data) {
+              location.reload();
+          }
+      });
+  });
+</script>
+{% endblock %}

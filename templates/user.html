@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+{% if show_warning %}
+<div class="alert alert-warning" role="alert"><strong>Heads up! </strong>{{username}} could not be located. Showing results for {{user.username}} instead.</div>
+{% endif %}
+<h2>{{user.response_title}}</h2>
+<p>{{user.full_body_html | safe}}</p>
+{% endblock %}

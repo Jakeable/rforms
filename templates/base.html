@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>{{g.settings.site_title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if g.settings.google_analytics_enabled and not g.user or g.user and not g.user.is_mod %}
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', '{{g.settings.google_analytics_id}}', 'auto');
+      ga('send', 'pageview');
+    </script>
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap.min.css">
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/bootstrap.min.js"></script>
+    {% if '/mod/' in request.path %}
+    <link rel="stylesheet" type="text/css" href="/static/jquery-confirm.min.css">
+    <script src="/static/jquery-confirm.min.js"></script>
+    <script src="/static/modals.js"></script>
+    {% endif %}
+    {% block head %}{% endblock %}
+    <style>
+        body {
+          padding-top: 70px;
+        }
+    </style>
+    </head>
+    <body>
+         <!-- Adapted from Bootstraps's Static Top Navbar example: http://getbootstrap.com/getting-started/#examples-->
+         <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">{{g.settings.site_title}}</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li {% if request.path == '/' %}class="active"{% endif %}><a href="/">Home</a></li>
+                {% if g.settings.preview_enabled or g.user and g.user.is_mod %}
+                <li {% if request.path in ['/form', '/preview'] %}class="active"{% endif %}><a href="/preview">{% if request.path == '/form' %}Form{%else%}Preview Form{%endif%}</a></li>
+                {% endif %}
+                {% if g.user and g.user.form_mod %}
+                <li {% if request.path == '/mod/settings' %}class="active"{% endif %}><a href="/mod/settings">Settings</a></li>
+                <li {% if request.path == '/mod/users' %}class="active"{% endif %}><a href="/mod/users">Users</a></li>
+                <li {% if request.path == '/mod/api' %}class="active"{% endif %}><a href="/mod/api">API</a></li>
+                {% endif %}
+              </ul>
+              {% if g.user %}
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout">Logout</a></li>
+              </ul>
+              {% endif %}
+            </div><!--/.nav-collapse -->
+          </div>
+        </nav>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

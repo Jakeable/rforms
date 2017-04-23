@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block head %}
+<style>
+    .panel {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    body {
+        overflow-x: hidden;
+
+    }
+</style>
+<script src="/static/form.js"></script>
+{% endblock %}
+{% block content %}
+{% if preview %}
+<div class="alert alert-info" role="alert"><strong>Heads up!</strong> This is just a preview. {% if g.user and g.user.form_mod %}Click <a href="/form">here</a> to view the actual form.{% else %}Please <a href="/auth?next=form">login to reddit</a> to fill out this form.{% endif %}</div>
+{% else %}
+<h4>submitting this form as <a href="https://www.reddit.com/user/{{g.user.username}}">u/{{g.user.username}}</a></h4>
+{% endif %}
+<h5>{{g.settings.instructions | safe}}</h5>
+<hr>
+<sup><font color="red">*denotes required question</font></sup>
+
+
+<form class="form-horizontal" {% if not preview %}method="POST"{% endif %}>
+
+    <input type="hidden">
+    <fieldset>
+    {% for question in data %}
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="form-group panel panel-default col-md-10">
+        {% if "error" in question.keys() %}
+        <div class="alert alert-danger" role="alert">
+          <span class="sr-only">Error:</span>
+          {% for error in question["error"] %}
+          {{ error }}
+          {% endfor %}
+        </div>
+        {% endif %}
+        <label class="col-md-4 control-label" for="{{question.id}}">{{question.text}}{% if question.validators is defined and question.validators.required is defined and question.validators.required == true %}<font color="red">*</font>{% endif %}</label>
+        <div class="col-md-6">
+        {% if question["type"] == "text" %}
+        {# Text input #}
+          <input type="text" name="{{question.id}}" id="{{question.id}}" value="{{question.response}}" placeholder="your answer here" class="form-control input-md" {% if preview %}disabled{% elif question.validators is defined and question.validators.required is defined and question.validators.required == true %}required=""{% endif %}>
+        {% elif question["type"] == "number" %}
+        {# Number input #}
+          <input type="number" id="{{question.id}}" name="{{question.id}}" value="{{question.response}}" placeholder="your answer here" class="form-control input-md" step="1" {% if question.validators is defined and question.validators.min is defined %}min="{{question.validators.min}}"{%endif%}{% if question.validators is defined and question.validators.max is defined %}min="{{question.validators.max}}"{%endif%}{% if preview %}disabled{% elif question.validators is defined and question.validators.required is defined and question.validators.required == true %}required=""{% endif %}>
+        {% elif question["type"] == "textarea" %}
+        {# Textarea #}
+          <textarea class="form-control" id="{{question.id}}" name="{{question.id}}" {% if question.validators is defined and question.validators.max is defined %}min="{{question.validators.max}}"{%endif%} {% if preview %}disabled{% elif question.validators is defined and question.validators.required is defined and question.validators.required == true %}required=""{% endif %}>{{question.response}}</textarea>
+        {% elif question["type"] == "radio" %}
+        {# Radio Buttons #}
+          {% for radio in question["data"] %}
+          <div class="radio">
+            <label for="{{radio[0]}}">
+              <input type="radio" name="{{question.id}}" id="{{radio[0]}}" value="{{radio[0]}}" {% if preview %}disabled{% elif question.validators is defined and question.validators.required is defined and question.validators.required == true %}required{% endif %}>
+              {{radio[1]}}
+              </div>
+            </label>
+          {% endfor %}
+        {% elif question["type"] == "checkbox" %}
+        {# Checkboxes #}
+          {% for checkbox in question["data"] %}
+          <div class="checkbox">
+            <label for="{{checkbox[0]}}">
+              <input type="checkbox" name="{{question.id}}" id="{{checkbox[0]}}" value="{{checkbox[0]}}"{% if preview %}disabled="disabled"{% endif %}>
+              {{checkbox[1]}}
+            </label>
+        	</div>
+    	  {% endfor %}
+        {% elif question["type"] == "dropdown" %}
+        {# Dropdown #}
+          <select id="selectbasic" name="selectbasic" class="form-control">
+              {% for option in question["data"] %}
+                <option value="{{option[0]}}">{{option[1]}}</option>
+              {% endfor %}
+          </select>
+        {% endif %}
+        <br>
+        {# show question validators #}
+        {% if not preview %}
+        <div class="container">
+        <a href="" id="req-{{question.id}}-toggle" data-thing-id="{{question.id}}" class="show-reqs-button">show question requirements</a>
+        <p id="req-{{question.id}}-p" class="requirement-words">
+            <ul class="requirement-words" id="req-{{question.id}}-ul">
+            {% for word in question["validator_words"] %}
+                <li>{{ word }}</li>
+            {% endfor %}
+            </ul>
+        </p>
+        </div>{# end validators #}
+        {% endif %}
+        </div>
+        </div>
+        </div>
+        <br>
+{% endfor %}
+
+{% if not preview %}
+<!-- Submit Button -->
+<div class="col-md-1"></div>
+<div class="row">
+<div class="col-md-10">
+<div class="form-group">
+  <label class="col-md-5 control-label" for="singlebutton"></label>
+  <div class="col-md-5">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Submit</button>
+  </div>
+</div>
+</div>
+</div>
+{% endif %}
+
+
+</fieldset>
+
+</form>
+
+{% endblock %}

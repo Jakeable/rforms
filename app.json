@@ -1,0 +1,58 @@
+{
+    "name":"rForms",
+    "description":"A Google Forms-like tool for Reddit",
+    "keywords":[
+        "Reddit",
+        "Python",
+        "Flask"
+    ],
+    "website":"https://reddit.com/r/rForms",
+    "addons":[
+        "heroku-postgresql"
+    ],
+    "repository":"https://github.com/Jakeable/rForms",
+    "success_url":"https://github.com/Jakeable/rForms/wiki/setup",
+    "env":{
+        "SECRET_KEY":{
+            "description":"A secret key for Flask's cookies",
+            "generator":"secret"
+        },
+        "REDDIT_FRONTEND_REDIRECT_URI":{
+            "description": "A reddit webapp redirect URI",
+            "required": true
+        },
+        "REDDIT_FRONTEND_CLIENT_ID":{
+            "description": "A reddit webapp client id",
+            "required": true
+        },
+        "REDDIT_FRONTEND_CLIENT_SECRET":{
+            "description": "A reddit webapp client secret",
+            "required": true
+        },
+        "REDDIT_BACKEND_REDIRECT_URI":{
+            "description": "A reddit personal use script redirect URI",
+            "required": true
+        },
+        "REDDIT_BACKEND_CLIENT_ID":{
+            "description": "A reddit personal use script client id",
+            "required": true
+        },
+        "REDDIT_BACKEND_CLIENT_SECRET":{
+            "description": "A reddit personal use script client secret",
+            "required": true
+        },
+        "REDDIT_BACKEND_USERNAME":{
+            "description": "A reddit account's username (must be listed as a developer for personal use script)",
+            "required": true
+        },
+        "REDDIT_BACKEND_PASSWORD":{
+            "description": "A reddit account's password (must be listed as a developer for personal use script)",
+            "required": true
+        },
+        "REDDIT_USER_AGENT":{
+            "description": "A User-Agent for reddit. Change the username on this to match the owner of this instance.",
+            "required": true,
+            "value": "rForms v1.0.0b (instance owned by u/YOUR_USERNAME_HERE)"
+        }
+    }
+}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <h2>API Key</h2>
+    <hr>
+    <div class="form-group">
+      <div class="col-md-4">
+      <input id="apikey" value="{{g.user.api_key}}" class="form-control input-md" disabled>
+      </div>
+    </div>
+    <br>
+    <p>This is your API key. Keep it secret, as it allows full access to this site.</p>
+</div>
+<hr>
+<div class="row">
+    <h2>API Documentation</h2>
+    <p>All requests should be sent to {{request.url_root}}, followed by the specific endpoint. All requests should pass your API key in the header (<code>X-Api-Key</code>) or as a parameter (<code>key</code>).</p>
+    <p>There are no ratelimits or access rules (besides that accessors must be moderators of this site).</p>
+</div>
+<hr>
+<div class="row">
+    <h2>API Endpoints</h2>
+</div>
+<hr>
+{% for endpoint in data %}
+<div class="row">
+    {% for path in endpoint.routes %}
+    <h3><i>{{path}}</i></h3>
+    {% endfor %}
+    <h5>{{endpoint.method}}</h5>
+    <p>Details: <i>{{endpoint.details}}</i></p>
+</div>
+<div class="row">
+    <h4>{% if request.method=="GET" %}Parameters{%else%}POST Data{%endif%}</h4>
+    <div class="col-md-8">
+    <table class="table table-condensed">
+       <thead>
+          <tr>
+             <th>parameter/data</th>
+             <th>description</th>
+             <th>example</th>
+          </tr>
+       </thead>
+       <tbody>
+          <tr>
+             <td>key</td>
+             <td>Your valid API key</td>
+             <td>LXEtBHMLPKkuGWibK5izCnW8LpUYhRYm</td>
+          </tr>
+          {% if endpoint.params and request.method == "GET" %}
+          {% for param in endpoint.params.keys() %}
+          <tr>
+             <td>{{param}}</td>
+             <td>{{endpoint.params[param].description}}</td>
+             <td>{{endpoint.params[param].example}}</td>
+          </tr>
+          {% endfor %}{%endif %}
+       </tbody>
+    </table>
+    </div>
+    <div class="col-md-4"></div>
+    </div>
+
+<div class="row">
+    <h4>Response</h4>
+    <div class="col-md-8">
+    <table class="table">
+       <thead>
+          <tr>
+             <th>key</th>
+             <th>description</th>
+             <th>example</th>
+             <th>type</th>
+          </tr>
+       </thead>
+       <tbody>
+          {% if endpoint.response %}
+          {% for param in endpoint.response.keys() %}
+          <tr>
+             <td>{{param}}</td>
+             <td>{{endpoint.response[param].description}}</td>
+             <td>{{endpoint.response[param].example}}</td>
+             <td>{{endpoint.response[param].type}}</td>
+          </tr>
+          {% endfor %}
+          {% else %}
+          <tr>
+             <td>status</td>
+             <td>Signifies that the request was accepted and processed.</td>
+             <td>OK</td>
+             <td>String</td>
+          </tr>
+          {%endif %}
+       </tbody>
+    </table>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+<hr>
+{% endfor %}
+{% endblock %}

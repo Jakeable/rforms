@@ -1,0 +1,62 @@
+[
+    {
+        "routes":[
+            "/api/queue"
+        ],
+        "method":"GET",
+        "details":"Returns the number of applications waiting to be processed.",
+        "response":{
+            "text":{
+                "description":"A text representation of unprocessed items",
+                "example":"There are currently 0 item(s) in the queue.",
+                "type":"string"
+            },
+            "number":{
+                "description":"An integer representation of unprocessed items",
+                "example":"0",
+                "type":"integer"
+            }
+        }
+    },
+    {
+        "routes":[
+            "/api/add_exemption"
+        ],
+        "method":"POST",
+        "details":"Add an exemption to the restrictions on a user account.",
+        "params":{
+            "username":{
+                "description":"The username of the user to add an exemption",
+                "example":"spez"
+            }
+        }
+    },
+    {
+        "routes":[
+            "/api/add_mod",
+            "/api/remove_mod"
+        ],
+        "method":"POST",
+        "details":"Add or remove a site moderator",
+        "params":{
+            "username":{
+                "description":"The username of the user to add or remove as moderator.",
+                "example":"kn0thing"
+            }
+        }
+    },
+    {
+        "routes":[
+            "/api/process"
+        ],
+        "method":"GET",
+        "details":"Processes 1 unprocessed form submission",
+        "response":{
+            "text":{
+                "description":"A text representation of unprocessed items",
+                "example":"0 unprocessed form submissions remaining",
+                "type":"string"
+            }
+        }
+    }
+]

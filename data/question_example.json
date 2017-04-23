@@ -1,0 +1,53 @@
+[
+	{
+		"text": "What is your favorite subreddit?",
+		"type": "text",
+		"priority": 1,
+		"validators": {
+			"min": 10,
+			"max": 1000,
+			"required": true
+		}
+	},
+	{
+		"text": "Can you agree to keep a secret?",
+		"type": "radio",
+		"priority": 2,
+		"data": [
+			"Yes",
+			"No"
+		],
+		"validators": {
+			"required": true
+		}
+	},
+	{
+		"text": "Select your favorite color(s) below.",
+		"type": "checkbox",
+		"priority": 3,
+		"data": [
+			"Red",
+			"Green",
+			"Blue",
+			"Yellow",
+			"White",
+			"Black",
+			"Purple"
+		],
+		"validators": {
+			"required": true,
+			"min": 1,
+			"max": 4
+		}
+	},
+	{
+		"text": "What number am I thinking of?",
+		"type": "number",
+		"priority": 4,
+		"validators": {
+			"required": true,
+			"min": 0,
+			"max": 10000
+		}
+	}
+]

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="btn-group">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    show only <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="/mod/users?mod=true">moderators</a></li>
+    <li><a href="/mod/users?exempt=true">exempt users</a></li>
+    <li><a href="/mod/users">all users</a></li>
+  </ul>
+</div>
+ <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>username</th>
+            <th>form submission</th>
+            <th>is moderator</th>
+            <th>eligible for exemption</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.username }}</td>
+            <td>
+                {% if user.submitted %}<p><a href="/mod/user/{{user.username}}" class="btn btn-primary" role="button">view</a></p>{%endif%}
+            </td>
+            <td>{% if user.form_mod %}mod{%endif%}</td>
+            <td>{% if user.is_exempt %}has exemption{% elif user.is_exempt and not user.submitted %}eligible{%else%}ineligible{%endif%}</td>
+            <td>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    actions <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    {% if user.eligible_for_exemption and not user.is_exempt and not user.is_submitted %}
+                    <li><a href="#" class="exemption-link">add exemption</a></li>
+                    {% endif %}
+                    {% if not user.form_mod %}
+                    <li><a href="#" class="moderator-link">make form moderator</a></li>
+                    {% else %}
+                    <li><a href="#" class="removemoderator-link">remove as moderator</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% if button_data %}
+<div class="container">
+{% if button_data[0] %}
+<p><a href="{{button_data[0]}}" class="btn btn-primary" role="button">Previous</a></p>
+{% endif %}
+<p><a href="{{button_data[1]}}" class="btn btn-primary" role="button">Next</a></p>
+</div>
+{% endif %}
+{% endblock %}
