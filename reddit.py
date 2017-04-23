@@ -122,14 +122,12 @@ def post_comment(thread, text):
 def user_info(username):
     bearer = "bearer " + get_bot_auth()
     user_agent = os.environ.get("REDDIT_USER_AGENT")
-    headers = {"Authorization": bearer, "User-Agent": user_agent}
-    out = requests.get(
-    "https://oauth.reddit.com/user/{0}/about.json".format(username),
-     headers=headers)
+    headers = {"Authorization" : bearer, "User-Agent" : user_agent}
+    out = requests.get("https://oauth.reddit.com/user/{0}/about.json".format(username), headers=headers)
 
     combined = int(me_dict['comment_karma']) + int(me_dict['link_karma'])
     try:
-        me_dict = out.json()['data']
+        me_dict =  out.json()['data']
         reg_dict_out = {'name': me_dict['name'],
                         'created': me_dict['created'],
                         'link_karma': me_dict['link_karma'],
@@ -139,13 +137,14 @@ def user_info(username):
                         'is_gold': me_dict['is_gold'],
                         'has_verified_email': me_dict['has_verified_email']}
         return reg_dict_out
-    except BaseException: try:
-            me_dict = out.json()['data']
+    except:
+        try:
+            me_dict =  out.json()['data']
             susp_dict_out = {'name': me_dict['name'],
                              'is_suspended': me_dict['is_suspended']}
             return susp_dict_out
-        except BaseException:            return out.json()
-
+        except:
+            return out.json()
 
 def send_message(user, subject, message):
     user_agent = os.environ.get("REDDIT_USER_AGENT")
@@ -156,12 +155,10 @@ def send_message(user, subject, message):
                       "subject": subject,
                       "text": message,
                       "to": user}
-        response = requests.post(
-    "https://oauth.reddit.com/api/compose",
-    headers=headers,
-     data=parameters)
+        response = requests.post("https://oauth.reddit.com/api/compose", headers=headers, data=parameters)
         return "success"
-    except BaseException:        return "failure"
+    except:
+        return "failure"
 
 
 def route(title, body, destination):
