@@ -5,7 +5,7 @@ from reddit import send_message, route
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import func, inspect
 from models import User
-from app import db
+from models import db
 from werkzeug.exceptions import HTTPException
 import random
 import json
