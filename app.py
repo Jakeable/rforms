@@ -147,11 +147,8 @@ def callback():
             run = True
             while run:
                 # issue key
-                "".join(
-                    random.choices(
-                        string.ascii_letters +
-                        string.digits,
-                        k=32))
+                allowed = string.ascii_letters + string.digits
+                key = "".join(random.choices(allowed, k=32))
                 u.api_key = key
                 try:
                     db.session.add(u)
