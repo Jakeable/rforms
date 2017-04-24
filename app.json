@@ -11,7 +11,7 @@
         "heroku-postgresql"
     ],
     "repository":"https://github.com/Jakeable/rForms",
-    "success_url":"https://github.com/Jakeable/rForms/wiki/setup",
+    "success_url":"/mod/settings",
     "env":{
         "SECRET_KEY":{
             "description":"A secret key for Flask's cookies",
