@@ -297,6 +297,9 @@ def process():
     title = user.response_title
     destination = g.settings.destination_id
     route(title, body, destination)
+    user.processed = True
+    db.session.add(user)
+    db.session.commit()
     return jsonify(text=f"{count-1} unprocessed form submissions remaining")
 
 @api.errorhandler(Exception)
