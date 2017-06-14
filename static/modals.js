@@ -50,7 +50,12 @@ function editSetting(name, title, help) {
         text: "Submit",
         btnClass: "btn-blue",
         action: function() {
-          var inp = $("input[name='input-answer']:checked").val();
+          if (setting.type == "bool") {
+            var inp = $("input[name='input-answer']:checked").val();
+          }
+          else {
+            var inp = this.$content.find(".input").val();
+          }
           if (!inp) {
             $.alert("Please provide a valid response.");
             return false;
