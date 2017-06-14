@@ -56,10 +56,14 @@ function editSetting(name, title, help) {
           else {
             var inp = this.$content.find(".input").val();
           }
+          
           if (!inp) {
             $.alert("Please provide a valid response.");
             return false;
           } else {
+            if (setting.type == "int") {
+              inp = Number(inp);
+            }
             $.post("/api/update_setting", {
               setting: name,
               data: inp
