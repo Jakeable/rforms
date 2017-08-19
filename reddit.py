@@ -95,7 +95,7 @@ def submit_post(title, text, subreddit):
 
 def post_comment(thread, text):
     bearer = "bearer " + get_bot_auth()
-    user_agent = "Jakeable commenting test" #os.environ.get("REDDIT_USER_AGENT")
+    user_agent = os.environ.get("REDDIT_USER_AGENT")
     headers = {"Authorization": bearer, "User-Agent": user_agent}
 
     # check for correct prefixing. assume thread unless stated otherwise.
