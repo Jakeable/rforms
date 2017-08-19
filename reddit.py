@@ -95,7 +95,7 @@ def submit_post(title, text, subreddit):
 
 def post_comment(thread, text):
     bearer = "bearer " + get_bot_auth()
-    user_agent = os.environ.get("REDDIT_USER_AGENT")
+    user_agent = "Jakeable commenting test" #os.environ.get("REDDIT_USER_AGENT")
     headers = {"Authorization": bearer, "User-Agent": user_agent}
 
     # check for correct prefixing. assume thread unless stated otherwise.
@@ -107,17 +107,29 @@ def post_comment(thread, text):
         return
 
     parameters = {"api_type": "json",
-                  "send_replies": False,
-                  "text": text}
-    response = requests.post("https://oauth.reddit.com/api/submit",
+                  "text": text,
+                  "parent": thread,
+                 }
+    response = requests.post("https://oauth.reddit.com/api/comment",
                              headers=headers,
                              data=parameters)
     try:
-        url = response.json()['json']['data']['url']
+        # generate URL for message/comment
+        response_json = response.json()['json']['data']['things'][0]['data']
+        base_url_comment = "https://www.reddit.com/r/{0}/comments/{1}/_/{2}"
+        base_url_message = "https://www.reddit.com/message/messages/{0}"
+        subreddit = response_json['subreddit']
+        if subreddit:
+            exp = re.compile("(t1|t3)_(.+)")
+            parent = exp.search(thread).groups()[1]
+        thread = response_json['id']
+        if subreddit:
+            url = base_url_comment.format(subreddit, parent, thread)
+        else:
+            url = base_url_message.format(thread)
     except KeyError:
-        url = "error"
+        url = response.json()
     return url
-
 
 def user_info(username):
     bearer = "bearer " + get_bot_auth()
