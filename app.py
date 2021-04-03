@@ -24,7 +24,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 sslify = SSLify(app)
 
 # SQLAlchemy intiialization
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("://", "ql://", 1)
 db.init_app(app)
 
 # import/register blueprints
